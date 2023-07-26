@@ -3,11 +3,13 @@ name: CD | Dev Docker Image
 on:
   push:
     branches:
-      - "main"
+      - "**"
 
 jobs:
   docker:
-    runs-on: DO
+    runs-on:      
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     steps:
       - name: Clear Space
         run: |
