@@ -32,7 +32,7 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:dev
-        build-args: |
-          "AWS_S3_BUCKET_WORKER=${{ secrets.AWS_S3_BUCKET_WORKER }}"
-          "AWS_ACCESS_KEY_ID_WORKER=${{ secrets.AWS_ACCESS_KEY_ID_WORKER }}"
-          "AWS_SECRET_ACCESS_KEY_WORKER=${{ secrets.AWS_SECRET_ACCESS_KEY_WORKER }}"
+          build-args: |
+            "AWS_S3_BUCKET_WORKER=${{ secrets.AWS_S3_BUCKET_WORKER }}"
+            "AWS_ACCESS_KEY_ID_WORKER=${{ secrets.AWS_ACCESS_KEY_ID_WORKER }}"
+            "AWS_SECRET_ACCESS_KEY_WORKER=${{ secrets.AWS_SECRET_ACCESS_KEY_WORKER }}"
