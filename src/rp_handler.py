@@ -5,7 +5,7 @@ Contains the handler function that will be called by the serverless.
 import os
 import torch
 
-from diffusers import DiffusionPipeline, KandinskyImg2ImgPipeline, KandinskyPriorPipeline, KandinskyV22PriorPipeline, KandinskyV22Pipeline
+from diffusers import DiffusionPipeline, KandinskyV22PriorPipeline, KandinskyV22Pipeline
 from diffusers.utils import load_image
 
 import runpod
@@ -39,10 +39,14 @@ def _save_and_upload_images(images, job_id):
     os.makedirs(f"/{job_id}", exist_ok=True)
     image_urls = []
     for index, image in enumerate(images):
-        image_path = os.path.join(f"/{job_id}", f"{index}.png")
+        file_name = f"{index}.png"
+        image_path = os.path.join(f"/{job_id}", file_name)
         image.save(image_path)
 
-        image_url = rp_upload.upload_image(job_id, image_path)
+        image_url = rp_upload.upload_file_to_bucket(file_name=file_name,
+                                                    file_location=image_path,
+                                                    bucket_name="fy-ai",
+                                                    prefix=f"{job_id}")
         image_urls.append(image_url)
     rp_cleanup.clean([f"/{job_id}"])
     return image_urls
@@ -123,7 +127,7 @@ def generate_image(job):
         
     image_urls = _save_and_upload_images(output, job['id'])
 
-    return {"image_url": image_urls[0]} if len(image_urls) == 1 else {"images": image_urls}
+    return {"image_urls": image_urls}
 
 
 runpod.serverless.start({"handler": generate_image})
