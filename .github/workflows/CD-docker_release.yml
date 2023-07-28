@@ -1,13 +1,23 @@
-name: CD | Release Docker Image
+name: CD | Dev Docker Image
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - "main"
 
 jobs:
   docker:
-    runs-on: DO
+    runs-on:      
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     steps:
+      - name: Clear Space
+        run: |
+          rm -rf /usr/share/dotnet
+          rm -rf /opt/ghc
+          rm -rf "/usr/local/share/boost"
+          rm -rf "$AGENT_TOOLSDIRECTORY"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -21,4 +31,10 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:${{ github.event.release.tag_name }}
+          tags: ${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache,mode=max
+          build-args: |
+            "AWS_S3_BUCKET_WORKER=${{ secrets.AWS_S3_BUCKET_WORKER }}"
+            "AWS_ACCESS_KEY_ID_WORKER=${{ secrets.AWS_ACCESS_KEY_ID_WORKER }}"
+            "AWS_SECRET_ACCESS_KEY_WORKER=${{ secrets.AWS_SECRET_ACCESS_KEY_WORKER }}"
