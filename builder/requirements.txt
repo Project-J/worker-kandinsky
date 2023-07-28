@@ -8,4 +8,4 @@ xformers==0.0.20
 git+https://github.com/huggingface/diffusers@8e8954bd15d3a3c36fbbaa37c978a8b5b8379f9f
 transformers==4.30.2
 accelerate==0.20.3
-triton==2.0.0.post1
+triton==2.0.0
