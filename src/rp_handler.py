@@ -9,10 +9,11 @@ from diffusers import DiffusionPipeline, KandinskyV22PriorPipeline, KandinskyV22
 from diffusers.utils import load_image
 
 import runpod
-from runpod.serverless.utils import rp_upload, rp_cleanup
+from runpod.serverless.utils import rp_cleanup
 from runpod.serverless.utils.rp_validator import validate
 
 from rp_schemas import INPUT_SCHEMA
+import rp_upload
 
 # Kandinsky 2.1 pipelines
 pipe_prior_2_1 = DiffusionPipeline.from_pretrained(
