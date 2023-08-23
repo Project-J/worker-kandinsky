@@ -32,8 +32,8 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:dev
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache-dev
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache-dev,mode=max
           build-args: |
             "AWS_S3_BUCKET_WORKER=${{ secrets.AWS_S3_BUCKET_WORKER }}"
             "AWS_ACCESS_KEY_ID_WORKER=${{ secrets.AWS_ACCESS_KEY_ID_WORKER }}"
