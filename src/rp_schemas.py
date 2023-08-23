@@ -8,10 +8,10 @@ INPUT_SCHEMA = {
         'type': str,
         'required': True,
     },
-    'model_version': {
-    'type': str,
-    'required': False,
-    'default': '2.1'
+        'model_version': {
+        'type': str,
+        'required': False,
+        'default': '2.2'
     },
     'negative_prompt': {
         'type': str,

@@ -3,11 +3,13 @@ name: CD | Dev Docker Image
 on:
   push:
     branches:
-      - "main"
+      - "**"
 
 jobs:
   docker:
-    runs-on: DO
+    runs-on:      
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     steps:
       - name: Clear Space
         run: |
@@ -30,3 +32,9 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:dev
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache-dev
+          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_REPO }}/${{ secrets.DOCKERHUB_IMG }}:buildcache-dev,mode=max
+          build-args: |
+            "AWS_S3_BUCKET_WORKER=${{ secrets.AWS_S3_BUCKET_WORKER }}"
+            "AWS_ACCESS_KEY_ID_WORKER=${{ secrets.AWS_ACCESS_KEY_ID_WORKER }}"
+            "AWS_SECRET_ACCESS_KEY_WORKER=${{ secrets.AWS_SECRET_ACCESS_KEY_WORKER }}"
